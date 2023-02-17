@@ -130,15 +130,20 @@
 
 
           <h2>{{ post.title }}</h2>
-          <div class="bar-chart">
-            <div class="ph" *ngFor="let _ of [].constructor(post.currentAmount)"></div>
-          </div>
-          <div class="bar-chart-goal">
-            <h2>{{ post.goal }}</h2>
+          <div class="bar-container">
+            <div class="bar-chart">
+              <div class="ph" *ngFor="let _ of [].constructor(post.currentAmount)" [style.width]="(1/post.goal)*100 + '%' " ></div>
+            </div>
+            <div class="bar-chart-goal">
+              <h2>{{ post.goal }}</h2>
+            </div>
           </div>
           <div class="bar-chart-text"></div>
-          <button type="button" class="btn btn-outline-success btn-lg">ADD A STAR!</button>
-          <button type="button" class="btn btn-outline-danger btn-lg">REMOVE A STAR!</button>
+          <p *ngIf="post.currentAmount >= post.goal">YOU DONE DID IT!</p>
+          <form>
+            <button type="button" class="btn btn-outline-success btn-lg" (click)="updateStar(post.id || '', post.title, post.content, post.date, post.time, post.currentAmount +1, post.goal)">ADD A STAR!</button>
+            <button type="button" class="btn btn-outline-danger btn-lg" (click)="updateStar(post.id || '', post.title, post.content, post.date, post.time, post.currentAmount -1, post.goal)">REMOVE A STAR!</button>
+          </form>
         </li>
       </ul>
       <p *ngIf="isFetching && !error">Loading...</p>

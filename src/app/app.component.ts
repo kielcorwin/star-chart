@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, timeout } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { UntypedFormGroup, UntypedFormControl, UntypedFormArray, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 
 import { Post } from './post.model';
@@ -67,6 +68,18 @@ export class AppComponent implements OnInit, OnDestroy {
     this.postsService.deletePosts().subscribe(() => {
       this.loadedPosts = [];
     });
+  }
+
+  updateStar(id:string, title: string, content: string, date: string, time: string, currentAmount: number, goal: number ) {
+    let currentDate =  formatDate(new Date(), 'M/d/yyyy', 'en_US');
+    let currentTime =  formatDate(new Date(), ' h:mma', 'en_US');
+    this.postsService.updateTask(id, title, content, currentDate, currentTime, currentAmount, goal);
+
+    setTimeout(() => {
+      this.onFetchPosts();
+    }, 100)
+
+    
   }
 
   onHandleError() {

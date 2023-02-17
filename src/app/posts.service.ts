@@ -36,6 +36,26 @@ export class PostsService {
       );
   }
 
+  updateTask(id:string, title: string, content: string, date: string, time: string, currentAmount: number, goal: number) {
+    const postData: Post = { title: title, content: content, date: date, time: time, currentAmount: currentAmount, goal: goal };
+    this.http
+      .put<{ name: string }>(
+        'https://starchart-97e2a-default-rtdb.firebaseio.com/posts/'+ id +'.json',
+       postData,
+        {
+          observe: 'response'
+        }
+      )
+      .subscribe(
+        responseData => {
+          console.log(responseData);
+        },
+        error => {
+          this.error.next(error.message);
+        }
+      );
+  }
+
   fetchPosts() {
     let searchParams = new HttpParams();
     searchParams = searchParams.append('print', 'pretty');
